@@ -29,36 +29,36 @@ class UUIDEncoder(json.JSONEncoder):
 
 consumer1 = Consumer({
     'bootstrap.servers': os.environ.get('KAFKA_BOOTSTRAP_SERVER'),
-    'security.protocol': 'SASL_SSL',
-    'sasl.username': os.environ.get('KAFKA_USERNAME'),
+    'security.protocol': os.environ.get('KAFKA_SECURITY_PROTOCOL'),
+    'sasl.username': os.environ.get('KAFKA_USERNAME'), 
     'sasl.password': os.environ.get('KAFKA_PASSWORD'),
     'sasl.mechanism': 'PLAIN',
-    'group.id': 'auth_group',
+    'group.id': os.environ.get('KAFKA_GROUP'),
     'auto.offset.reset': 'earliest'
 })
-consumer1.subscribe(['users_request'])
+consumer1.subscribe([os.environ.get('KAFKA_TOPIC')])
 
 consumer2 = Consumer({
     'bootstrap.servers': os.environ.get('KAFKA_BOOTSTRAP_SERVER'),
-    'security.protocol': 'SASL_SSL',
-    'sasl.username': os.environ.get('KAFKA_USERNAME'),
+    'security.protocol': os.environ.get('KAFKA_SECURITY_PROTOCOL'),
+    'sasl.username': os.environ.get('KAFKA_USERNAME'), 
     'sasl.password': os.environ.get('KAFKA_PASSWORD'),
     'sasl.mechanism': 'PLAIN',
-    'group.id': 'contacts_group',
+    'group.id': os.environ.get('KAFKA_GROUP_2'),
     'auto.offset.reset': 'earliest'
 })
-consumer2.subscribe(['user_contacts'])
+consumer2.subscribe([os.environ.get('KAFKA_TOPIC_2')])
 
 consumer3 = Consumer({
     'bootstrap.servers': os.environ.get('KAFKA_BOOTSTRAP_SERVER'),
-    'security.protocol': 'SASL_SSL',
-    'sasl.username': os.environ.get('KAFKA_USERNAME'),
+    'security.protocol': os.environ.get('KAFKA_SECURITY_PROTOCOL'),
+    'sasl.username': os.environ.get('KAFKA_USERNAME'), 
     'sasl.password': os.environ.get('KAFKA_PASSWORD'),
     'sasl.mechanism': 'PLAIN',
-    'group.id': 'delivery_group',
+    'group.id': os.environ.get('KAFKA_GROUP_3'),
     'auto.offset.reset': 'earliest'
 })
-consumer3.subscribe(['delivery_address'])
+consumer3.subscribe([os.environ.get('KAFKA_TOPIC_3')])
 
 while True:
     msg1 = consumer1.poll(1.0)
