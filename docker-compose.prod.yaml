@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  # Django app
+  backend_auth:
+    build: .
+    image: boomslag/auth:0.0.1
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - 8000:8000
+    # environment:
+    #   - DATABASE_URL=postgres://boomslag:jIWGjfB1LFbxoujKPu6JRv8E1B7msJ6U@dpg-cgolfd8rddl9mms1nvpg-a.oregon-postgres.render.com/boomslag_qf24
+    #   - DB_HOST=
+    #   - DB_DATABASE=
+    #   - DB_PORT=
+    #   - DB_PASSWORD=
+    #   - REDIS_URL=rediss://red-cgoleq0rddl9mms1lms0:Txfmu5BLq6zlZGpEMTFboehh2Tt73iTj@oregon-redis.render.com:6379
+    #   - REDIS_PASSWORD=Txfmu5BLq6zlZGpEMTFboehh2Tt73iTj
+
+  # Event Queue Kafka
+  queue_auth:
+    build: .
+    image: boomslag/auth:0.0.1
+    command: >
+      sh -c "python consumer.py"
