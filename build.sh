@@ -18,7 +18,8 @@ echo "Installing requirements..."
 pip install -r requirements.txt
 
 echo "Running collectstatic..."
-python manage.py collectstatic --no-input -v 3
+# python manage.py collectstatic --no-input -v 3 # This provides a more verbose version
+python manage.py collectstatic --no-input
 
 echo "Running migrations..."
 python manage.py migrate
