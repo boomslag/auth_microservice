@@ -16,7 +16,7 @@ environ.Env.read_env()
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
-DEBUG = os.environ.get('DEBUG')
+DEBUG = 'RENDER' not in os.environ
 DOMAIN = os.environ.get('DOMAIN')
 
 PDM_ADDRESS_GOERLI = os.environ.get('PDM_ADDRESS_GOERLI')
@@ -28,9 +28,13 @@ GALR_ADDRESS_MAINNET = os.environ.get('GALR_ADDRESS_MAINNET')
 ETHERSCAN_API_KEY = os.environ.get('ETHERSCAN_API_KEY')
 
 CSRF_COOKIE_SECURE = False
-SESSION_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False 
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS_DEV')
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+    
 CORS_ORIGIN_WHITELIST = env.list('CORS_ORIGIN_WHITELIST_DEV')
 CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS_DEV')
 
