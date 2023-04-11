@@ -178,3 +178,16 @@ class BestSellingInstructorsView(StandardAPIView):
         serializer = GetUserProfileSerializer(profiles, many=True)
 
         return self.send_response(serializer.data)
+    
+from django.core.cache import cache
+
+class TestCacheView(StandardAPIView):
+    permission_classes = (permissions.AllowAny,)
+    def get(self, request, *args, **kwargs):
+        test_key = 'test_key'
+        test_value = cache.get(test_key)
+
+        if test_value is None:
+            test_value = 'Cache is working!'
+            cache.set(test_key, test_value, 60)  # Set cache for 60 seconds
+        return self.send_response(test_value)

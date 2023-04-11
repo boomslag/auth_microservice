@@ -11,7 +11,7 @@ urlpatterns = [
     path('get_details/<id>/', GetUserDetailsView.as_view()),
     path('get/profile/<id>/', GetUserProfileView.as_view()),
     path('instructors/best_selling/', BestSellingInstructorsView.as_view(), name='best_selling_instructors'),
-    # path('category/<category_slug>', BlogListCategoryView.as_view()),
+    path('test_cache/', TestCacheView.as_view()),
     # path('<post_slug>', PostDetailView.as_view()),
     # path("search/<str:search_term>",SearchBlogView.as_view()),
 ]
