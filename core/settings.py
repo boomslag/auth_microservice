@@ -307,6 +307,7 @@ FILE_UPLOAD_PERMISSIONS = 0o640
 
 EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
 
+
 ACTIVE_CAMPAIGN_URL=os.environ.get('ACTIVE_CAMPAIGN_URL')
 ACTIVE_CAMPAIGN_KEY=os.environ.get('ACTIVE_CAMPAIGN_KEY')
 
@@ -325,13 +326,22 @@ if not DEBUG:
     CORS_ORIGIN_WHITELIST =env.list('CORS_ORIGIN_WHITELIST_DEPLOY')
     CSRF_TRUSTED_ORIGINS =env.list('CSRF_TRUSTED_ORIGINS_DEPLOY')
 
-    DEFAULT_FROM_EMAIL = 'BoomSlag - Ecommerce <mail@boomslag.com>'
     EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = env('EMAIL_HOST')
-    EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-    EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-    EMAIL_PORT = env('EMAIL_PORT')
-    EMAIL_USE_TLS = env('EMAIL_USE_TLS')
+    SECURE_SSL_REDIRECT = True
+
+    # SMTP.com configuration
+    EMAIL_HOST = os.environ.get('EMAIL_HOST')
+    EMAIL_PORT = int(os.environ.get('EMAIL_PORT'))
+
+    # Your SMTP.com sender account credentials
+    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+
+    # Use TLS when connecting to the SMTP server
+    EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS') == 'True'
+
+    # Default "from" address for sending emails
+    DEFAULT_FROM_EMAIL = 'Boomslag <noreply@boomslag.com>'
 
     # CSRF_COOKIE_SECURE = True
     # SESSION_COOKIE_SECURE = True
