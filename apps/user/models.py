@@ -198,23 +198,23 @@ class Rate(models.Model):
 
 
 
-def post_user_confirmed(request, user ,*args, **kwargs):
-    #1. Definir usuario que ser registra
-    user = user
-    #2. Crear cliente en stripe
-    stripe_customer = stripe.Customer.create(
-        email=user.email,
-        name=user.first_name+" "+user.last_name
-    )
-    #3 Agegar Stripe Customer ID a Modelo de Usuario
-    user.stripe_customer_id = stripe_customer["id"]
-    user.save()
+# def post_user_confirmed(request, user ,*args, **kwargs):
+#     #1. Definir usuario que ser registra
+#     user = user
+#     #2. Crear cliente en stripe
+#     stripe_customer = stripe.Customer.create(
+#         email=user.email,
+#         name=user.first_name+" "+user.last_name
+#     )
+#     #3 Agegar Stripe Customer ID a Modelo de Usuario
+#     user.stripe_customer_id = stripe_customer["id"]
+#     user.save()
 
-    #4 Crear Stripe Connect Account ID
-    connect_account = stripe.Account.create(
-        type = "express",
-        capabilities={"card_payments": {"requested": True}, "transfers": {"requested": True}},
-    )
-    user.stripe_account_id = connect_account["id"]
-    user.save()
-user_registered.connect(post_user_confirmed)
+#     #4 Crear Stripe Connect Account ID
+#     connect_account = stripe.Account.create(
+#         type = "express",
+#         capabilities={"card_payments": {"requested": True}, "transfers": {"requested": True}},
+#     )
+#     user.stripe_account_id = connect_account["id"]
+#     user.save()
+# user_registered.connect(post_user_confirmed)
