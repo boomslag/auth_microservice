@@ -40,21 +40,21 @@ if RENDER_EXTERNAL_HOSTNAME:
 CORS_ORIGIN_WHITELIST = env.list('CORS_ORIGIN_WHITELIST_DEV')
 CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS_DEV')
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-        },
-    },
-}
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG',
+#         },
+#     },
+# }
 
 
 # Application definition
@@ -311,9 +311,9 @@ SOCIAL_AUTH_FACEBOOK_SECRET=os.environ.get('SOCIAL_AUTH_FACEBOOK_SECRET')
 SOCIAL_AUTH_FACEBOOK_SCOPE=['email']
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS={'fields': 'email, first_name, last_name, username'}
 
-STRIPE_PUBLIC_KEY = env('STRIPE_PUBLIC_KEY_DEV')
-STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY_DEV')
-STRIPE_WEBHOOK_SECRET= env('STRIPE_WEBHOOK_SECRET_DEV')
+# STRIPE_PUBLIC_KEY = env('STRIPE_PUBLIC_KEY_DEV')
+# STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY_DEV')
+# STRIPE_WEBHOOK_SECRET= env('STRIPE_WEBHOOK_SECRET_DEV')
 
 AUTH_USER_MODEL = 'user.UserAccount'
 
@@ -362,9 +362,9 @@ if not DEBUG:
     # CSRF_COOKIE_SECURE = True
     # SESSION_COOKIE_SECURE = True
 
-    STRIPE_PUBLIC_KEY = env('STRIPE_PUBLIC_KEY_DEPLOY')
-    STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY_DEPLOY')
-    STRIPE_WEBHOOK_SECRET= env('STRIPE_WEBHOOK_SECRET_DEPLOY')
+    # STRIPE_PUBLIC_KEY = env('STRIPE_PUBLIC_KEY_DEPLOY')
+    # STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY_DEPLOY')
+    # STRIPE_WEBHOOK_SECRET= env('STRIPE_WEBHOOK_SECRET_DEPLOY')
 
     # django-ckeditor will not work with S3 through django-storages without this line in settings.py
     AWS_QUERYSTRING_AUTH = False

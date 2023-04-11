@@ -9,8 +9,8 @@ activecampaign_url = settings.ACTIVE_CAMPAIGN_URL
 activecampaign_key = settings.ACTIVE_CAMPAIGN_KEY
 from djoser.signals import  user_registered
 import uuid,json
-import stripe
-stripe.api_key = settings.STRIPE_SECRET_KEY
+# import stripe
+# stripe.api_key = settings.STRIPE_SECRET_KEY
 import requests
 from core.producer import producer
 import re
