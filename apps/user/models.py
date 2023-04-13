@@ -61,48 +61,20 @@ class UserAccountManager(BaseUserManager):
         )
         producer.flush()
 
-        if(user.agreed):
-            # CREATE/UPDATING CONTACT
-            url = activecampaign_url + '/api/3/contact/sync'
-            data = {
-                'contact': {
-                    'email': email,
-                }
-            }
-            headers = {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Api-Token': activecampaign_key
-            }
-
-            response = requests.post(url, json=data, headers=headers)
-
-            contact = response.json()
-
-            contact_id = str(contact['contact']['id'])
-
-            # ADDING OF THE TAG TO CONTACT
-            url = activecampaign_url + '/api/3/contactTags'
-            data = {
-                'contactTag': {
-                    'contact': contact_id,
-                    'tag': '5'
-                }
-            }
-
-            response = requests.post(url, json=data, headers=headers)
-
-            # ADD CONTACT TO OUR MASTER LIST AND DEMO LIST
-            url = activecampaign_url + '/api/3/contactLists'
-            data = {
-                'contactList': {
-                    'list': '2',
-                    'contact': contact_id,
-                    'status': '1'
-                }
-            }
-
-            response = requests.post(url, json=data, headers=headers)
+        if user.agreed:
+            # Send HTTP Request to Cart microservice containing the user data so cart microservice can create a cart for this user
+            item={}
+            item['id']=str(user.id)
+            item['email']=user.email
+            item['username']=user.username
+            item['first_naame']=user.first_name
+            item['last_name']=user.last_name
+            producer.produce(
+                'user_registered',
+                key='user_agreed',
+                value=json.dumps(item).encode('utf-8')
+            )
+            producer.flush()
 
         return user
 
