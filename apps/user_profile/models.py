@@ -9,8 +9,8 @@ from django.db import models
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
 
-    picture = models.ImageField(default='users/user_default_profile.png',  upload_to='media/users/pictures/', blank=True, null=True, verbose_name='Picture')
-    banner = models.ImageField(default='users/user_default_bg.jpg', upload_to='media/users/banners/' , blank=True, null=True, verbose_name='Banner')
+    picture = models.ImageField(default='media/users/user_default_profile.png',  upload_to='media/users/pictures/', blank=True, null=True, verbose_name='Picture')
+    banner = models.ImageField(default='media/users/user_default_bg.jpg', upload_to='media/users/banners/' , blank=True, null=True, verbose_name='Banner')
 
     location = models.CharField(max_length=50, null=True, blank=True)
     url = models.CharField(max_length=80, null=True, blank=True)
