@@ -9,11 +9,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import F, Case, When
 
 class OnlineConsumer(AsyncWebsocketConsumer):
-
-    
     async def connect(self):
-        user = self.scope['user']
-        self.user_id = str(user.id)
+        self.user_id = self.scope['query_string'].decode('utf-8').split('=')[1]
         uuid_str = str(uuid.uuid4()) # generate a random UUID
         self.group_name = f"online_{uuid_str}_{self.user_id}"
         await self.channel_layer.group_add(self.group_name, self.channel_name)

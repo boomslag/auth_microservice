@@ -11,9 +11,7 @@ import uuid
 class FriendsConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
-        user = self.scope['user']
-        self.user_id = str(user.id)
-        uuid_str = str(uuid.uuid4()) # generate a random UUID
+        self.user_id = self.scope['query_string'].decode('utf-8').split('=')[1]
         self.group_name = f"friends_{self.user_id}"
         await self.channel_layer.group_add(self.group_name, self.channel_name)
         await self.accept()

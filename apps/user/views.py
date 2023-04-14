@@ -15,6 +15,7 @@ from apps.wallet.models import Wallet
 from apps.user_profile.models import Profile
 from apps.user_profile.serializers import UserProfileSerializer
 from .serializers import UserListSerializer,UserSerializer
+from apps.wallet.serializers import UserWalletSerializer
 from django.http.response import HttpResponse
 import json
 import uuid
@@ -119,6 +120,16 @@ class GetUserProfileView(StandardAPIView):
         profile = Profile.objects.get(user=user)
         serializer = UserProfileSerializer(profile).data
         return self.send_response(serializer)
+
+
+class GetUserWalletView(StandardAPIView):
+    permission_classes = (permissions.AllowAny,)
+    def get(self, request,id, *args, **kwargs):
+        user = User.objects.get(id=id)
+        wallet = Wallet.objects.get(user=user)
+        serializer = UserWalletSerializer(wallet).data
+        return self.send_response(serializer)
+
 
 class EditUserRoleView(StandardAPIView):
     permission_classes = (permissions.AllowAny,)

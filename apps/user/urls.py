@@ -10,6 +10,7 @@ urlpatterns = [
     path('get/<id>/', GetUserView.as_view()),
     path('get_details/<id>/', GetUserDetailsView.as_view()),
     path('get/profile/<id>/', GetUserProfileView.as_view()),
+    path('get/wallet/<id>/', GetUserWalletView.as_view()),
     path('instructors/best_selling/', BestSellingInstructorsView.as_view(), name='best_selling_instructors'),
     path('test_cache/', TestCacheView.as_view()),
     # path('<post_slug>', PostDetailView.as_view()),

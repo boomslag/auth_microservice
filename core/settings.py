@@ -40,21 +40,21 @@ if RENDER_EXTERNAL_HOSTNAME:
 CORS_ORIGIN_WHITELIST = env.list('CORS_ORIGIN_WHITELIST_DEV')
 CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS_DEV')
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-        },
-    },
-}
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG',
+#         },
+#     },
+# }
 
 
 # Application definition
@@ -269,7 +269,7 @@ AUTHENTICATION_BACKENDS = (
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT', ),
     'TOKEN_OBTAIN_PAIR': 'apps.user.serializers.CustomTokenObtainPairSerializer',
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=900),
+    'ACCESS_TOKEN_LIFETIME': timedelta(seconds=900),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
     'ROTATE_REFRESFH_TOKENS':True,
     'BLACKLIST_AFTER_ROTATION': True,
@@ -299,6 +299,7 @@ DJOSER = {
         'user': 'apps.user.serializers.UserSerializer',
         'current_user': 'apps.user.serializers.UserSerializer',
         'user_delete': 'djoser.serializers.UserDeleteSerializer',
+        'token_create': 'apps.user.serializers.CustomTokenObtainPairSerializer',
     },
 }
 

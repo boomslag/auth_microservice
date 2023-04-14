@@ -50,6 +50,14 @@ class GetUserWalletView(StandardAPIView):
         wallet_data = serializer.data
         return self.send_response(wallet_data,status=status.HTTP_200_OK)
 
+class GetUserPolygonWalletView(StandardAPIView):
+    def get(self,request,*args, **kwargs):
+        address = request.query_params.get('address', None)
+        wallet = Wallet.objects.get(polygon_address=address)
+        serializer = UserWalletPrivateKeySerializer(wallet)
+        wallet_data = serializer.data
+        return self.send_response(wallet_data,status=status.HTTP_200_OK)
+
 
 class MyUserWalletBalanceView(StandardAPIView):
     def get(self,request,*args, **kwargs):

@@ -9,7 +9,7 @@ urlpatterns = [
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
     path('auth/', include('djoser.social.urls')),
-    path('user/jwt/create/', CustomTokenObtainPairView.as_view(), name='jwt-create'),
+    path('auth/jwt/create/', CustomTokenObtainPairView.as_view(), name='custom_jwt_create'),
 
     path('api/users/', include('apps.user.urls')),
     path('api/friends/', include('apps.friends.urls')),
