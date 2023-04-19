@@ -1,6 +1,7 @@
-from django.shortcuts import render
-from utils.images import get_image_from_data_url
-# Create your views here.
+
+from django.core.exceptions import ValidationError
+import base64
+import secrets
 from rest_framework_api.views import BaseAPIView, StandardAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -92,44 +93,110 @@ class EditUsernameView(StandardAPIView):
         else:
             return self.send_error('Error',500)
 
-
-class EditProfilePictureView(APIView):
+class EditProfilePictureView(StandardAPIView):
     permission_classes = (permissions.IsAuthenticated,)
-    def put(self,request,format=None):
-        data = self.request.data
-        image = data['image']
-        filename =data['filename']
+    def put(self, request, format=None):
+        image = request.POST.get('image')
+        filename = request.POST.get('filename')
+
+        # print(f"Image: {image}")
+        # print(f"Filename: {filename}")
 
         # Define User
-        user = self.request.user
+        user = request.user
+        # print(f"User: {user}")
 
-        image_base64 = image.split('base64,', 1 )
-        image_data = b64decode(image_base64[1])
-        user.picture = ContentFile(image_data, filename)
-        user.save()
+        # Retrieve the user's profile
+        profile = user.profile
 
-        return Response({
-            'success':'UserAccount Edited' 
-        },status=status.HTTP_200_OK)
+        allowed_extensions = ['jpeg', 'jpg', 'png']
+
+        if ';base64,' in image:
+            format, imgstr = image.split(';base64,')
+            ext = format.split('/')[-1]
+            data = ContentFile(base64.b64decode(imgstr))
+
+            # Generate a unique file name
+            file_name, file_ext = os.path.splitext(filename)
+            unique_name = f"{file_name}_{secrets.token_hex(8)}{file_ext}"
+            data.name = unique_name
+
+            # print(f"Generated unique name: {unique_name}")
+
+            # validate the file type
+            if ext not in allowed_extensions:
+                raise ValidationError('Invalid file type. Only jpeg and png are allowed.')
+
+            # validate the file size
+            if data.size > 2000000:
+                raise ValidationError('File size should be less than 2MB')
+
+            profile.picture = data
+        elif image.startswith('/media/') or image.startswith('http'):
+            # Validate the file type based on the URL
+            file_name, file_ext = os.path.splitext(image)
+            if file_ext[1:] not in allowed_extensions:
+                raise ValidationError('Invalid file type. Only jpeg and png are allowed.')
+        else:
+            raise ValidationError('Invalid image file format.')
+
+        profile.save()
+        # print(f"Profile picture after save: {profile.picture}")
+
+        return self.send_response('Success', status=status.HTTP_200_OK)
 
 class EditBannerView(StandardAPIView):
     permission_classes = (permissions.IsAuthenticated,)
-    # parser_classes = [MultiPartParser, FormParser]
-    def put(self,request,format=None):
-        data = self.request.data
-        image = data['image']
-        filename =data['filename']
+
+    def put(self, request, format=None):
+        image = request.POST.get('image')
+        filename = request.POST.get('filename')
+
+        # print(f"Image: {image}")
+        # print(f"Filename: {filename}")
 
         # Define User
-        user = self.request.user
+        user = request.user
+        # print(f"User: {user}")
 
-        image_base64 = image.split('base64,', 1 )
-        image_data = b64decode(image_base64[1])
-        user.banner = ContentFile(image_data, filename)
-        user.save()
+        # Retrieve the user's profile
+        profile = user.profile
 
-        return self.send_response('Success',status=status.HTTP_200_OK)
+        allowed_extensions = ['jpeg', 'jpg', 'png']
 
+        if ';base64,' in image:
+            format, imgstr = image.split(';base64,')
+            ext = format.split('/')[-1]
+            data = ContentFile(base64.b64decode(imgstr))
+
+            # Generate a unique file name
+            file_name, file_ext = os.path.splitext(filename)
+            unique_name = f"{file_name}_{secrets.token_hex(8)}{file_ext}"
+            data.name = unique_name
+
+            # print(f"Generated unique name: {unique_name}")
+
+            # validate the file type
+            if ext not in allowed_extensions:
+                raise ValidationError('Invalid file type. Only jpeg and png are allowed.')
+
+            # validate the file size
+            if data.size > 2000000:
+                raise ValidationError('File size should be less than 2MB')
+
+            profile.banner = data
+        elif image.startswith('/media/') or image.startswith('http'):
+            # Validate the file type based on the URL
+            file_name, file_ext = os.path.splitext(image)
+            if file_ext[1:] not in allowed_extensions:
+                raise ValidationError('Invalid file type. Only jpeg and png are allowed.')
+        else:
+            raise ValidationError('Invalid image file format.')
+
+        profile.save()
+        # print(f"Profile banner after save: {profile.banner}")
+
+        return self.send_response('Success', status=status.HTTP_200_OK)
 
 class EditFirstNameView(APIView):
     permission_classes = (permissions.IsAuthenticated,)

@@ -269,8 +269,8 @@ AUTHENTICATION_BACKENDS = (
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT', ),
     'TOKEN_OBTAIN_PAIR': 'apps.user.serializers.CustomTokenObtainPairSerializer',
-    'ACCESS_TOKEN_LIFETIME': timedelta(seconds=900),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=90),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=180),
     'ROTATE_REFRESFH_TOKENS':True,
     'BLACKLIST_AFTER_ROTATION': True,
     'AUTH_TOKEN_CLASSES': (

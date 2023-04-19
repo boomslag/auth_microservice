@@ -107,28 +107,50 @@ class UserIdListView(StandardAPIView):
 
 class GetUserView(StandardAPIView):
     permission_classes = (permissions.AllowAny,)
-    def get(self, request,id, *args, **kwargs):
-        user = User.objects.get(id=id)
-        serializer = UserSerializer(user).data
-        return self.send_response(serializer)
-    
+
+    def get(self, request, id, *args, **kwargs):
+        cache_key = f'user_{id}'
+        user_data = cache.get(cache_key)
+
+        if not user_data:
+            user = User.objects.get(id=id)
+            serializer = UserSerializer(user).data
+            user_data = self.send_response(serializer)
+            cache.set(cache_key, user_data, 60 * 15)  # Cache for 15 minutes
+
+        return user_data
 
 class GetUserProfileView(StandardAPIView):
     permission_classes = (permissions.AllowAny,)
-    def get(self, request,id, *args, **kwargs):
-        user = User.objects.get(id=id)
-        profile = Profile.objects.get(user=user)
-        serializer = UserProfileSerializer(profile).data
-        return self.send_response(serializer)
 
+    def get(self, request, id, *args, **kwargs):
+        cache_key = f'user_profile_{id}'
+        profile_data = cache.get(cache_key)
+
+        if not profile_data:
+            user = User.objects.get(id=id)
+            profile = Profile.objects.get(user=user)
+            serializer = UserProfileSerializer(profile).data
+            profile_data = self.send_response(serializer)
+            cache.set(cache_key, profile_data, 60 * 15)  # Cache for 15 minutes
+
+        return profile_data
 
 class GetUserWalletView(StandardAPIView):
     permission_classes = (permissions.AllowAny,)
-    def get(self, request,id, *args, **kwargs):
-        user = User.objects.get(id=id)
-        wallet = Wallet.objects.get(user=user)
-        serializer = UserWalletSerializer(wallet).data
-        return self.send_response(serializer)
+
+    def get(self, request, id, *args, **kwargs):
+        cache_key = f'user_wallet_{id}'
+        wallet_data = cache.get(cache_key)
+
+        if not wallet_data:
+            user = User.objects.get(id=id)
+            wallet = Wallet.objects.get(user=user)
+            serializer = UserWalletSerializer(wallet).data
+            wallet_data = self.send_response(serializer)
+            cache.set(cache_key, wallet_data, 60 * 15)  # Cache for 15 minutes
+
+        return wallet_data
 
 
 class EditUserRoleView(StandardAPIView):
