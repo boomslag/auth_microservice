@@ -115,10 +115,10 @@ class GetUserView(StandardAPIView):
         if not user_data:
             user = User.objects.get(id=id)
             serializer = UserSerializer(user).data
-            user_data = self.send_response(serializer)
+            user_data = serializer
             cache.set(cache_key, user_data, 60 * 15)  # Cache for 15 minutes
 
-        return user_data
+        return self.send_response(user_data)
 
 class GetUserProfileView(StandardAPIView):
     permission_classes = (permissions.AllowAny,)
@@ -131,10 +131,10 @@ class GetUserProfileView(StandardAPIView):
             user = User.objects.get(id=id)
             profile = Profile.objects.get(user=user)
             serializer = UserProfileSerializer(profile).data
-            profile_data = self.send_response(serializer)
+            profile_data = serializer
             cache.set(cache_key, profile_data, 60 * 15)  # Cache for 15 minutes
 
-        return profile_data
+        return self.send_response(profile_data)
 
 class GetUserWalletView(StandardAPIView):
     permission_classes = (permissions.AllowAny,)
@@ -147,10 +147,10 @@ class GetUserWalletView(StandardAPIView):
             user = User.objects.get(id=id)
             wallet = Wallet.objects.get(user=user)
             serializer = UserWalletSerializer(wallet).data
-            wallet_data = self.send_response(serializer)
+            wallet_data = serializer
             cache.set(cache_key, wallet_data, 60 * 15)  # Cache for 15 minutes
 
-        return wallet_data
+        return self.send_response(wallet_data)
 
 
 class EditUserRoleView(StandardAPIView):
