@@ -61,11 +61,13 @@ LOGGING = {
 DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+SITE_ID = 1
 
 PROJECT_APPS = [
     'apps.user',
@@ -124,7 +126,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -300,6 +302,14 @@ DJOSER = {
         'current_user': 'apps.user.serializers.UserSerializer',
         'user_delete': 'djoser.serializers.UserDeleteSerializer',
         'token_create': 'apps.user.serializers.CustomTokenObtainPairSerializer',
+    },
+    'TEMPLATES': {
+        "activation": "email/activation.html",
+        "confirmation": "email/confirmation.html",
+        "password_reset": "email/password_reset.html",
+        "password_changed_confirmation": "email/password_changed_confirmation.html",
+        "username_changed_confirmation": "email/username_changed_confirmation.html",
+        "username_reset": "email/username_reset.html",
     },
 }
 
