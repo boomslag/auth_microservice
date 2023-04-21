@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.contrib.sites.models import Site
 
 from . import models
 
@@ -13,4 +12,3 @@ class PostAdmin(admin.ModelAdmin):
     list_editable = ('become_seller', 'role', 'verified','is_staff' )
     list_per_page = 25
 
-admin.site.register(Site)
