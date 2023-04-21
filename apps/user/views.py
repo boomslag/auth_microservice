@@ -126,7 +126,7 @@ class GetUserProfileView(StandardAPIView):
     def get(self, request, id, *args, **kwargs):
         cache_key = f'user_profile_{id}'
         profile_data = cache.get(cache_key)
-
+ 
         if not profile_data:
             user = User.objects.get(id=id)
             profile = Profile.objects.get(user=user)
